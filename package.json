@@ -1,0 +1,30 @@
+{
+  "name": "drive-watch",
+  "version": "0.0.0",
+  "description": "Watch a Hyperdrive or a Localdrive and get the diff",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "dependencies": {
+    "bare-path": "^2.1.0",
+    "localwatch": "^1.3.2",
+    "streamx": "^2.16.1"
+  },
+  "imports": {
+    "path": {
+      "bare": "bare-path",
+      "default": "path"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/holepunchto/drive-watch.git"
+  },
+  "author": "Holepunch Inc.",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/holepunchto/drive-watch/issues"
+  },
+  "homepage": "https://github.com/holepunchto/drive-watch"
+}
