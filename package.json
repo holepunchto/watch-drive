@@ -1,5 +1,5 @@
 {
-  "name": "drive-watcher",
+  "name": "watch-drive",
   "version": "1.0.0",
   "description": "Watch a Hyperdrive or a Localdrive and get the diff",
   "main": "index.js",
@@ -19,12 +19,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/holepunchto/drive-watcher.git"
+    "url": "https://github.com/holepunchto/watch-drive.git"
   },
   "author": "Holepunch Inc.",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/holepunchto/drive-watcher/issues"
+    "url": "https://github.com/holepunchto/watch-drive/issues"
   },
-  "homepage": "https://github.com/holepunchto/drive-watcher"
+  "homepage": "https://github.com/holepunchto/watch-drive"
 }

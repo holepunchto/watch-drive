@@ -1,15 +1,15 @@
-# drive-watch
+# watch-drive
 
 Watch a Hyperdrive or a Localdrive and get the diff
 
 ```
-npm install drive-watch
+npm install watch-drive
 ```
 
 ## Usage
 
 ``` js
-const watch = require('drive-watch')
+const watch = require('watch-drive')
 
 // returns a readable stream
 const w = watch(drive, prefix)
