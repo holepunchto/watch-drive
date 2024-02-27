@@ -45,19 +45,23 @@ class HyperdriveWatcher extends Readable {
     this._diff = this.drive.diff(this._previous, this.key, { update: false })
     this._previous = this.drive.version
 
-    let result = []
+    const key = this.drive.core.key
+    const length = this._previous
+    const fork = this.drive.core.fork
+
+    let diff = []
     let pushed = false
 
     try {
       for await (const { left, right } of this._diff) {
-        if (left) result.push({ type: 'update', key: left.key })
-        else result.push({ type: 'delete', key: right.key })
+        if (left) diff.push({ type: 'update', key: left.key })
+        else diff.push({ type: 'delete', key: right.key })
 
-        if (result.length < this._maxBatchSize) continue
+        if (diff.length < this._maxBatchSize) continue
 
-        this.push(result)
+        this.push({ key, length, fork, diff })
         pushed = true
-        result = []
+        diff = []
       }
     } catch (err) {
       return cb(err)
@@ -65,8 +69,8 @@ class HyperdriveWatcher extends Readable {
       this._diff = null
     }
 
-    if (result.length) {
-      this.push(result)
+    if (diff.length) {
+      this.push({ key, length, fork, diff })
       pushed = true
     }
 
@@ -97,7 +101,11 @@ function watch (drive, key = '/') {
 function createLocalWatch (drive, key) {
   const prefix = ('/' + key + '/').replace(/(^\/+)|(\/+$)+/g, '/')
 
-  return new Localwatch(path.join(drive.root, key), { map: toKey })
+  return new Localwatch(path.join(drive.root, key), { map: toKey, mapReadable })
+
+  function mapReadable (diff) {
+    return { key: null, length: 0, fork: 0, diff }
+  }
 
   function toKey ({ type, filename }) {
     return { type, key: prefix + filename.slice(drive.root.length).replace(/\\/g, '/').replace(/^\/+/, '') }
