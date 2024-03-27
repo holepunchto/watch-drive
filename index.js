@@ -81,7 +81,12 @@ class HyperdriveWatcher extends Readable {
   _predestroy () {
     if (this._diff) this._diff.destroy()
     this._diff = null
-    this._bump()
+
+    if (this._readCallback) {
+      const cb = this._readCallback
+      this._readCallback = null
+      cb(null)
+    }
   }
 
   _destroy (cb) {
