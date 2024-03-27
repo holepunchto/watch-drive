@@ -1,6 +1,6 @@
 {
   "name": "watch-drive",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Watch a Hyperdrive or a Localdrive and get the diff",
   "main": "index.js",
   "files": [
