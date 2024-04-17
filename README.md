@@ -14,7 +14,7 @@ const watch = require('watch-drive')
 // returns a readable stream
 const w = watch(drive, prefix)
 
-for await (const diff of w) {
+for await (const { diff } of w) {
   for (const { type, key } of diff) {
     // type is either 'update' or 'delete'
     // key is the key that changed
