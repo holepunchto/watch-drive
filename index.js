@@ -5,7 +5,7 @@ const path = require('path')
 module.exports = watch
 
 class HyperdriveWatcher extends Readable {
-  constructor (drive, key, { eagerOpen = false } = {}) {
+  constructor (drive, key, { eagerOpen }) {
     super({ highWaterMark: 0, eagerOpen })
 
     this.drive = drive
@@ -97,16 +97,19 @@ class HyperdriveWatcher extends Readable {
   }
 }
 
-function watch (drive, key = '/') {
+function watch (drive, key = '/', { eagerOpen = false } = {}) {
   return drive.core
-    ? new HyperdriveWatcher(drive, key)
-    : createLocalWatch(drive, key)
+    ? new HyperdriveWatcher(drive, key, { eagerOpen })
+    : createLocalWatch(drive, key, { eagerOpen })
 }
 
-function createLocalWatch (drive, key) {
+function createLocalWatch (drive, key, { eagerOpen }) {
   const prefix = ('/' + key + '/').replace(/(^\/+)|(\/+$)+/g, '/')
 
-  return new Localwatch(path.join(drive.root, key), { map: toKey, mapReadable })
+  return new Localwatch(
+    path.join(drive.root, key),
+    { map: toKey, mapReadable, eagerOpen }
+  )
 
   function mapReadable (diff) {
     return { key: null, length: 0, fork: 0, diff }
