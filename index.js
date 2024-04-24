@@ -5,8 +5,8 @@ const path = require('path')
 module.exports = watch
 
 class HyperdriveWatcher extends Readable {
-  constructor (drive, key) {
-    super({ highWaterMark: 0 })
+  constructor (drive, key, { eagerOpen = false } = {}) {
+    super({ highWaterMark: 0, eagerOpen })
 
     this.drive = drive
     this.key = key
