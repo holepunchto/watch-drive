@@ -8,7 +8,7 @@
   ],
   "dependencies": {
     "bare-path": "^2.1.0",
-    "localwatch": "^1.3.2",
+    "localwatch": "^1.4.1",
     "streamx": "^2.16.1"
   },
   "imports": {
