@@ -5,7 +5,7 @@ const path = require('path')
 module.exports = watch
 
 class HyperdriveWatcher extends Readable {
-  constructor (drive, key, { eagerOpen }) {
+  constructor(drive, key, { eagerOpen }) {
     super({ highWaterMark: 0, eagerOpen })
 
     this.drive = drive
@@ -21,7 +21,7 @@ class HyperdriveWatcher extends Readable {
     this.drive.core.on('truncate', this._bumpBound)
   }
 
-  _bump () {
+  _bump() {
     if (this._readCallback) {
       const cb = this._readCallback
       this._readCallback = null
@@ -29,7 +29,7 @@ class HyperdriveWatcher extends Readable {
     }
   }
 
-  async _open (cb) {
+  async _open(cb) {
     try {
       await this.drive.update()
     } catch (err) {
@@ -41,7 +41,7 @@ class HyperdriveWatcher extends Readable {
     cb(null)
   }
 
-  async _read (cb) {
+  async _read(cb) {
     this._diff = this.drive.diff(this._previous, this.key, { update: false })
     this._previous = this.drive.version
 
@@ -78,7 +78,7 @@ class HyperdriveWatcher extends Readable {
     this._readCallback = cb
   }
 
-  _predestroy () {
+  _predestroy() {
     if (this._diff) this._diff.destroy()
     this._diff = null
 
@@ -89,7 +89,7 @@ class HyperdriveWatcher extends Readable {
     }
   }
 
-  _destroy (cb) {
+  _destroy(cb) {
     this._predestroy()
     this.drive.core.off('append', this._bumpBound)
     this.drive.core.off('truncate', this._bumpBound)
@@ -97,25 +97,34 @@ class HyperdriveWatcher extends Readable {
   }
 }
 
-function watch (drive, key = '/', { eagerOpen = false } = {}) {
+function watch(drive, key = '/', { eagerOpen = false } = {}) {
   return drive.core
     ? new HyperdriveWatcher(drive, key, { eagerOpen })
     : createLocalWatch(drive, key, { eagerOpen })
 }
 
-function createLocalWatch (drive, key, { eagerOpen }) {
+function createLocalWatch(drive, key, { eagerOpen }) {
   const prefix = ('/' + key + '/').replace(/(^\/+)|(\/+$)+/g, '/')
 
-  return new Localwatch(
-    path.join(drive.root, key),
-    { map: toKey, mapReadable, eagerOpen }
-  )
+  return new Localwatch(path.join(drive.root, key), {
+    map: toKey,
+    mapReadable,
+    eagerOpen
+  })
 
-  function mapReadable (diff) {
+  function mapReadable(diff) {
     return { key: null, length: 0, fork: 0, diff }
   }
 
-  function toKey ({ type, filename }) {
-    return { type, key: prefix + filename.slice(drive.root.length).replace(/\\/g, '/').replace(/^\/+/, '') }
+  function toKey({ type, filename }) {
+    return {
+      type,
+      key:
+        prefix +
+        filename
+          .slice(drive.root.length)
+          .replace(/\\/g, '/')
+          .replace(/^\/+/, '')
+    }
   }
 }
