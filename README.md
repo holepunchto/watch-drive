@@ -8,7 +8,7 @@ npm install watch-drive
 
 ## Usage
 
-``` js
+```js
 const watch = require('watch-drive')
 
 // returns a readable stream
